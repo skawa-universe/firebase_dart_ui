@@ -18,13 +18,19 @@ external AuthUI getInstance(String appId);
 class AuthUI {
   // Important - pass fbAuth as a ".jsObject" without the Dart wrapper
   external AuthUI(AuthJsImpl fbAuth, [String appId]);
+
   external void start(String element, UIConfig config);
+
   external void disableAutoSignIn();
+
   external bool isAutoSignInDisabled();
+
   external bool isPending();
+
   external bool isPendingRedirect();
 
   external PromiseJsImpl delete();
+
   external void reset();
 }
 
@@ -37,7 +43,9 @@ const NONE = "none";
 @anonymous
 abstract class AuthCredential {
   external String get accessToken;
+
   external String get providerId;
+
   external String get idToken;
 }
 
@@ -45,27 +53,28 @@ abstract class AuthCredential {
 @anonymous
 abstract class AuthUIError {
   external String get code;
-  // currently not mapped. Do we really need it?
-  // external dynamic get credential;
+// currently not mapped. Do we really need it?
+// external dynamic get credential;
 }
 
 // Convenience definitions of below Callback interfaces
-typedef SignInAuthResultSuccess = bool Function(
-    fb.UserCredential authResult, String redirectUrl);
-typedef SignInSuccess = bool Function(
-    fb.User currentUser, AuthCredential credential, String redirectUrl);
+typedef SignInAuthResultSuccess = bool Function(fb.UserCredential authResult, String redirectUrl);
+typedef SignInSuccess = bool Function(fb.User currentUser, AuthCredential credential, String redirectUrl);
 typedef SignInFailure = PromiseJsImpl<void> Function(AuthUIError error);
 
 @JS()
 @anonymous
 abstract class Callbacks {
-  external SignInAuthResultSuccess get signInSuccessWithAuthResult;
+  external bool Function(fb.UserCredential authResult, String redirectUrl) get signInSuccessWithAuthResult;
+
   external SignInSuccess get signInSuccess;
+
   external SignInFailure get signInFailure;
+
   external void Function() get uiShown;
 
   external factory Callbacks(
-      {SignInAuthResultSuccess signInSuccessWithAuthResult, // <--new in 2.7.0
+      {Function signInSuccessWithAuthResult, // <--new in 2.7.0
       SignInSuccess signInSuccess, // <--deprecated in 2.7.0
       SignInFailure signInFailure,
       void Function() uiShown});
@@ -103,19 +112,23 @@ abstract class EmailCustomParameters extends CustomParameters {
 @anonymous
 abstract class CustomSignInOptions {
   external String get provider;
+
   external List<String> get scopes;
+
   external dynamic get customParameters;
 
-  external factory CustomSignInOptions(
-      {provider, scopes: const [], CustomParameters customParameters});
+  external factory CustomSignInOptions({provider, scopes: const [], CustomParameters customParameters});
 }
 
 @anonymous
 @JS()
 abstract class UIConfig {
   external List<dynamic> get signInOptions;
+
   external Callbacks get callbacks;
+
   external String get signInSuccessUrl;
+
   external String get signInFlow; // redirect or popup
   external String get tosUrl; // Terms of service URL
   external String get privacyPolicyUrl; // Privacy Url
